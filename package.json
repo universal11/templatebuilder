@@ -1,0 +1,10 @@
+{
+	"name":"template-builder",
+	"description":"Constructs html email creative from a template file",
+	"version":"1.0.0",
+	"private":true,
+	"dependencies":{
+		"commander":"latest",
+		"jsdom":"latest"
+	}
+}

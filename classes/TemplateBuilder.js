@@ -59,8 +59,8 @@ TemplateBuilder.build = function(template, domain){
 	//var domainFragments = domain.split("", 3);
 	//var shatteredDomain = 
 	//template = template.replace(new RegExp("[#domain#]", "gm"), domain);
-	template = template.replace(/\[!\#domain\#\]!/g, domain);
-	template = template.replace(/\[!\#domain_fragments\#\]!/g, TemplateBuilder.domainToFragments(domain));
+	template = template.replace(/\[\!\#domain\#\!\]/g, domain);
+	template = template.replace(/\[\!\#domain_fragments\#\!\]/g, TemplateBuilder.domainToFragments(domain));
 	return template;
 }
 

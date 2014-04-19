@@ -2,26 +2,53 @@
 
 var Program = require("commander");
 var TemplateBuilder = require("./classes/TemplateBuilder.js");
-var HTMLToolKit = require("./classes/HTMLToolKit.js");
+var TheUniversalFramework = require("./theuniversalframework");
+var PMTAToolKit = TheUniversalFramework.PMTAToolKit;
+var HTMLToolKit = TheUniversalFramework.HTMLToolKit;
 var BuildMode = require("./models/BuildMode.js");
 var FileSystem = require("fs");
 var JSDOM = require("jsdom").jsdom;
 
 
 function additionalHelp(){
-	//console.log("Additional help...");
+	console.log("Additional help...");
 }
 
 Program
 	.version("1.0.0")
 	.option("-n, --name <name>", "Template name. Also used for output file names.")
 	.option("-t, --template <file>", "Template file to build from.")
-	.option("-o, --output_directory <path>", "Output directory")
-	.option("-m, --mode <n>", "Sets mode: 1 - Normal, 2 - Image Map", parseInt);
+	//.option("-o, --output_path <path>", "Output directory")
+	.option("-m, --mode <n>", "Sets mode: 1 - Normal, 2 - Image Map", parseInt)
+	
+
+
+Program
+	.command("build [template]")
+	.description("Constructs template from tokens")
+	.option("-d, --sender_domain <domain>")
+	.option("-o, --output_path <path>")
+	.action(function(template, options){
+		console.log("Building:" + template + " for " + options.sender_domain);
+		var template = FileSystem.readFileSync(template, "utf-8");
+		console.log("Output Path: " + options.output_path);
+		FileSystem.writeFileSync(options.output_path, TemplateBuilder.build(template, options.sender_domain));
+		//process.exit(1);
+	});
+
+Program
+	.command("*")
+	.description("Runs main")
+	.action(function(){
+
+	});
 
 Program.on("--help", additionalHelp);
 
 Program.parse(process.argv);
+
+var pmtaToolKit = new PMTAToolKit();
+pmtaToolKit.sayHello();
 
 if(!Program.template || !Program.output_directory){
 	console.log(Program.help());

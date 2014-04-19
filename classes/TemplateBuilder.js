@@ -52,6 +52,39 @@ TemplateBuilder.create = function(FileSystem, JSDOM, name, htmlToolKit, template
 	
 }
 
+TemplateBuilder.build = function(template, domain){
+	/*
+	' _ space.repeat(tt.number(3,12)) _ '
+	*/
+	//var domainFragments = domain.split("", 3);
+	//var shatteredDomain = 
+	//template = template.replace(new RegExp("[#domain#]", "gm"), domain);
+	template = template.replace(/\[\#domain\#\]/g, domain);
+	template = template.replace(/\[\#domain_fragments\#\]/g, TemplateBuilder.domainToFragments(domain));
+	return template;
+}
+
+//does not support subdomains currently
+TemplateBuilder.domainToFragments = function(domain){
+	var domainName = domain.split(".")[0];
+	var domainNameCharacters = domainName.split("");
+	var domainNameCharactersCount = domainNameCharacters.length;
+	var domainFragments = "'";
+	for(var i=0; i < domainNameCharactersCount; i++){
+		var domainNameCharacter = domainNameCharacters[i];
+		domainFragments += domainNameCharacter;
+		if(( (i + 1) % 3) == 0){
+			if(i != (domainNameCharactersCount - 1)){
+				domainFragments += "' _ space.repeat(tt.number(3,12)) _ '";
+			}
+			
+
+		}
+	}
+	domainFragments += "'";
+	return domainFragments;
+}
+
 TemplateBuilder.imageMap = function(html, outputFile){
 	htmlToolKit.htmlToImage(templateFile, outputFile, 800, 0);
 	//to do --- upload generated image to hosting

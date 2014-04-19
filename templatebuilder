@@ -29,9 +29,9 @@ Program
 	.option("-d, --sender_domain <domain>")
 	.option("-o, --output_path <path>")
 	.action(function(template, options){
-		console.log("Building:" + template + " for " + options.sender_domain);
+		console.log("Cloning: " + template + " for " + options.sender_domain);
 		var template = FileSystem.readFileSync(template, "utf-8");
-		console.log("Output Path: " + options.output_path);
+		console.log("Output: " + options.output_path);
 		FileSystem.writeFileSync(options.output_path, TemplateBuilder.build(template, options.sender_domain));
 		//process.exit(1);
 	});
@@ -47,13 +47,12 @@ Program.on("--help", additionalHelp);
 
 Program.parse(process.argv);
 
-var pmtaToolKit = new PMTAToolKit();
-pmtaToolKit.sayHello();
-
-if(!Program.template || !Program.output_directory){
+/**
+if(!Program.template){
 	console.log(Program.help());
 	return 0;
 }
+
 
 if(!Program.mode){
 	Program.mode = 1;
@@ -61,7 +60,7 @@ if(!Program.mode){
 
 TemplateBuilder.create(FileSystem, JSDOM, Program.name, new HTMLToolKit(), Program.template, Program.output_directory, Program.mode);
 
-/**test
+test
 switch(Program.mode){
 	case BuildMode.NORMAL:
 		TemplateBuilder.create(FileSystem, JSDOM, Program.name, Program.template, Program.output_directory);
